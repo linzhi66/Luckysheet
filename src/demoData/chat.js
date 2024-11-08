@@ -337,8 +337,7 @@ body {
 }
 
 const needChatHosts = [
-    'crm.lashuju.com',
-    'localhost:3000'
+
 ]
 function isNeedChat() {
     const host = location.host;

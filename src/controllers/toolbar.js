@@ -5,6 +5,9 @@ import { getObjType, camel2split } from '../utils/util';
 
 // 默认的工具栏按钮
 export const defaultToolbar = [
+    'save',
+    '|',
+
     'undo',
     'redo',
     'paintFormat',
@@ -62,6 +65,7 @@ export const defaultToolbar = [
 
 // 工具栏按钮 id 关系
 export const toolbarIdMap = {
+    save: '#luckysheet-icon-save',
     undo: '#luckysheet-icon-undo', //Undo redo
     redo: '#luckysheet-icon-redo',
     paintFormat: ['#luckysheet-icon-paintformat'], //Format brush
@@ -108,6 +112,20 @@ export function createToolbarHtml() {
     const fontarray = locale().fontarray;
     const defaultFmtArray = locale().defaultFmt;
     const htmlMap = {
+        save: `<div class="luckysheet-toolbar-button luckysheet-inline-block disabled" data-tips="${toolbar.save}"
+        id="luckysheet-icon-save" role="button" style="user-select: none;">
+            <div class="luckysheet-toolbar-button-outer-box luckysheet-inline-block"
+            style="user-select: none;">
+                <div class="luckysheet-toolbar-button-inner-box luckysheet-inline-block"
+                style="user-select: none;">
+                    <div class="luckysheet-icon luckysheet-inline-block " style="user-select: none;">
+                        <div aria-hidden="true" class="luckysheet-icon-img-container luckysheet-icon-img luckysheet-icon-undo iconfont-luckysheet luckysheet-iconfont-baocun"
+                        style="user-select: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`,
         undo: `<div class="luckysheet-toolbar-button luckysheet-inline-block disabled" data-tips="${toolbar.undo}"
         id="luckysheet-icon-undo" role="button" style="user-select: none;">
             <div class="luckysheet-toolbar-button-outer-box luckysheet-inline-block"

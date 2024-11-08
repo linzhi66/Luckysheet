@@ -14,7 +14,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.luckysheet-iconfont-baocun:before {
+  content: "\e7bb";
+}
 .luckysheet-iconfont-lianjie:before {
   content: "\e7f8";
 }

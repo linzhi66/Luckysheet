@@ -52,6 +52,7 @@ import { openProtectionModal, checkProtectionFormatCells, checkProtectionNotEnab
 import Store from "../store";
 import locale from "../locale/locale";
 import { checkTheStatusOfTheSelectedCells, frozenFirstRow, frozenFirstColumn } from "../global/api";
+import formula from "../global/formula";
 
 const menuButton = {
     menu:
@@ -151,7 +152,36 @@ const menuButton = {
     luckysheetPaintSingle: false,
     initialMenuButton: function() {
         let _this = this;
+        //保存触发
+        $("#luckysheet-icon-save").click(function(options){
+            if(parseInt($("#luckysheet-input-box").css("top")) > 0){
+                if ($("#luckysheet-formula-search-c").is(":visible") && formula.searchFunctionCell != null) {
+                    formula.searchFunctionEnter($("#luckysheet-formula-search-c").find(".luckysheet-formula-search-item-active"));
+                }
+                else {
+                    formula.updatecell(Store.luckysheetCellUpdate[0], Store.luckysheetCellUpdate[1]);
+                    Store.luckysheet_select_save = [{
+                        "row": [Store.luckysheetCellUpdate[0], Store.luckysheetCellUpdate[0]],
+                        "column": [Store.luckysheetCellUpdate[1], Store.luckysheetCellUpdate[1]],
+                        "row_focus": Store.luckysheetCellUpdate[0],
+                        "column_focus": Store.luckysheetCellUpdate[1]
+                    }];
+                }
 
+                //若有参数弹出框，隐藏
+                if($("#luckysheet-search-formula-parm").is(":visible")){
+                    $("#luckysheet-search-formula-parm").hide();
+                }
+                //若有参数选取范围弹出框，隐藏
+                if($("#luckysheet-search-formula-parm-select").is(":visible")){
+                    $("#luckysheet-search-formula-parm-select").hide();
+                }
+
+            }
+            if (options.success && typeof options.success === 'function') {
+                options.success();
+            }
+        })
         //格式刷
         $("#luckysheet-icon-paintformat").click(function(e) {
             // *如果禁止前台编辑，则中止下一步操作
