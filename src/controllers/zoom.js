@@ -3,7 +3,7 @@ import locale from '../locale/locale';
 import { replaceHtml } from '../utils/util';
 import sheetmanage from './sheetmanage';
 import {changeSheetContainerSize} from './resize';
-import { jfrefreshgrid_rhcw } from '../global/refresh';
+import { jfrefreshgrid_rhcw } from "../global/refresh";
 import server from './server';
 import luckysheetPostil from './postil';
 import imageCtrl from './imageCtrl';
@@ -20,11 +20,11 @@ export function zoomChange(ratio){
     clearTimeout(luckysheetZoomTimeout);
     luckysheetZoomTimeout = setTimeout(() => {
         if (Store.clearjfundo) {
-            Store.jfredo.push({ 
-                "type": "zoomChange", 
-                "zoomRatio": Store.zoomRatio, 
-                "curZoomRatio": ratio, 
-                "sheetIndex": Store.currentSheetIndex, 
+            Store.jfredo.push({
+                "type": "zoomChange",
+                "zoomRatio": Store.zoomRatio,
+                "curZoomRatio": ratio,
+                "sheetIndex": Store.currentSheetIndex,
             });
         }
         currentWheelZoom = null;
@@ -43,7 +43,7 @@ export function zoomChange(ratio){
         if(currentSheet.config==null){
             currentSheet.config = {};
         }
-    
+
         if(currentSheet.config.sheetViewZoom==null){
             currentSheet.config.sheetViewZoom = {};
         }
@@ -53,13 +53,13 @@ export function zoomChange(ratio){
             type = "viewNormal";
         }
         currentSheet.config.sheetViewZoom[type+"ZoomScale"] = ratio;
-    
+
         server.saveParam("all", Store.currentSheetIndex, Store.zoomRatio, { "k": "zoomRatio" });
         server.saveParam("cg", Store.currentSheetIndex, currentSheet.config["sheetViewZoom"], { "k": "sheetViewZoom" });
 
         zoomRefreshView();
     }, 100);
-    
+
 }
 
 export function zoomRefreshView(){
@@ -83,11 +83,11 @@ export function zoomInitial(){
     // 缩放步长
     const ZOOM_WHEEL_STEP = 0.02; // ctrl + 鼠标滚轮
     const ZOOM_STEP = 0.1; // 点击以及 Ctrl + +-
-    
+
     // 缩放最大最小比例
     const MAX_ZOOM_RATIO = 4;
     const MIN_ZOOM_RATIO = .1;
-    
+
     $("#luckysheet-zoom-minus").click(function(){
         let currentRatio;
         if(Store.zoomRatio==null){
@@ -154,7 +154,7 @@ export function zoomInitial(){
             // console.log(moveX, curentX, offsetX);
             // curentX = moveX;
             // let left = parseFloat($("#luckysheet-zoom-cursor").css("left"));
-            let pos = cursorLeft + offsetX; 
+            let pos = cursorLeft + offsetX;
             let currentRatio = positionToRatio(pos);
 
             if(currentRatio>MAX_ZOOM_RATIO){
@@ -197,22 +197,36 @@ export function zoomInitial(){
     document.addEventListener(
         'wheel',
         function (ev) {
-            if (!ev.ctrlKey || !ev.deltaY) {
+            if (!ev.deltaY) {
                 return;
             }
-            if (currentWheelZoom === null) {
-                currentWheelZoom = Store.zoomRatio || 1;
+            if (ev.ctrlKey) {
+                if (currentWheelZoom === null) {
+                    currentWheelZoom = Store.zoomRatio || 1;
+                }
+                currentWheelZoom += ev.deltaY < 0 ? ZOOM_WHEEL_STEP : -ZOOM_WHEEL_STEP;
+                if (currentWheelZoom >= MAX_ZOOM_RATIO) {
+                    currentWheelZoom = MAX_ZOOM_RATIO;
+                } else if (currentWheelZoom < MIN_ZOOM_RATIO) {
+                    currentWheelZoom = MIN_ZOOM_RATIO;
+                }
+                zoomChange(currentWheelZoom);
+                zoomNumberDomBind(currentWheelZoom);
+                ev.preventDefault();
+                ev.stopPropagation();
+            } else if (ev.shiftKey) {
+                let $t = $("#luckysheet-cell-main");
+                let scrollLeft = $("#luckysheet-scrollbar-x").scrollLeft();
+                // 获取scrollLeft的最大值
+                if (ev.deltaY > 0) {
+                    scrollLeft = scrollLeft + 20;
+                } else {
+                    scrollLeft = scrollLeft - 20;
+                }
+                $("#luckysheet-scrollbar-x").scrollLeft(scrollLeft);
+                ev.preventDefault();
+                ev.stopPropagation();
             }
-            currentWheelZoom += ev.deltaY < 0 ? ZOOM_WHEEL_STEP : -ZOOM_WHEEL_STEP;
-            if (currentWheelZoom >= MAX_ZOOM_RATIO) {
-                currentWheelZoom = MAX_ZOOM_RATIO;
-            } else if (currentWheelZoom < MIN_ZOOM_RATIO) {
-                currentWheelZoom = MIN_ZOOM_RATIO;
-            }
-            zoomChange(currentWheelZoom);
-            zoomNumberDomBind(currentWheelZoom);
-            ev.preventDefault();
-            ev.stopPropagation();
         },
         { capture: true, passive: false }
     );
@@ -236,7 +250,7 @@ export function zoomInitial(){
                 zoom = 1;
                 handled = true;
             }
-    
+
             if (handled) {
                 ev.preventDefault();
                 if (zoom >= MAX_ZOOM_RATIO) {
