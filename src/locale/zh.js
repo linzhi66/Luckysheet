@@ -6035,6 +6035,7 @@ export default {
         },
     },
     toolbar: {
+        fileOption: "文件",
         save: "保存",
         undo: "撤销",
         redo: "重做",
@@ -6099,6 +6100,10 @@ export default {
 
         cellFormat: "设置单元格格式",
         print: "打印",
+    },
+    fileOption:{
+        open: "打开",
+        export: "导出",
     },
     alternatingColors: {
         applyRange: "应用范围",

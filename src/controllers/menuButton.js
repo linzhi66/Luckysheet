@@ -32,6 +32,7 @@ import { countfunc } from "../global/count";
 import { hideMenuByCancel } from "../global/cursorPos";
 import { getSheetIndex, getRangetxt, getluckysheetfile } from "../methods/get";
 import { setluckysheetfile } from "../methods/set";
+import method from "../global/method";
 import {
     isInlineStringCell,
     isInlineStringCT,
@@ -152,6 +153,58 @@ const menuButton = {
     luckysheetPaintSingle: false,
     initialMenuButton: function() {
         let _this = this;
+        $("#luckysheet-icon-fileoption").click(function() {
+            let menuButtonId = $(this).attr("id") + "-menuButton";
+            let $menuButton = $("#" + menuButtonId);
+            const _locale = locale();
+            const locale_file = _locale.fileOption;
+            if ($menuButton.length == 0) {
+                let itemdata = [
+                   {
+                        text: locale_file.open,
+                        value: "open",
+                        example: '',
+                    },
+                    {
+                        text: locale_file.export,
+                        value: "export",
+                        example: '',
+                    },
+                ];
+
+                let itemset = _this.createButtonMenu(itemdata);
+
+                let menu = replaceHtml(_this.menu, { id: "fileoption", item: itemset, subclass: "", sub: "" });
+
+                $("body").append(menu);
+                $menuButton = $("#" + menuButtonId).width(85);
+
+                $menuButton.find(".luckysheet-cols-menuitem").click(function() {
+                    $menuButton.hide();
+                    luckysheetContainerFocus();
+
+                    let $t = $(this),
+                      itemvalue = $t.attr("itemvalue");
+
+                    if (itemvalue == "open") {
+                        method.createHookFunction("openFile");
+                    } else if (itemvalue == "export") {
+                        //range
+                        method.createHookFunction("exportFile");
+                    }
+                });
+            }
+
+            let userlen = $(this).outerWidth();
+            let tlen = $menuButton.outerWidth();
+
+            let menuleft = $(this).offset().left;
+            if (tlen > userlen && tlen + menuleft > $("#" + Store.container).width()) {
+                menuleft = menuleft - tlen + userlen;
+            }
+            mouseclickposition($menuButton, menuleft, $(this).offset().top + 25, "lefttop");
+        });
+
         //保存触发
         $("#luckysheet-icon-save").click(function(options){
             if(parseInt($("#luckysheet-input-box").css("top")) > 0){

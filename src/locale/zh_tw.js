@@ -5791,6 +5791,7 @@ export default {
         }
     },
     toolbar: {
+        fileOption         : '文件',
         save               : '保存',
         undo               : '撤銷',
         redo               : '重做',
@@ -5852,6 +5853,10 @@ export default {
         moreOptions        : '更多選項',
         cellFormat         : '設定儲存格格式',
         print              : '列印'
+    },
+    fileOption:{
+        open: "打开",
+        export: "导出",
     },
     alternatingColors: {
         applyRange        : '應用範圍',

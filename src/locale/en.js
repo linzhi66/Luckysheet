@@ -6102,6 +6102,7 @@ export default {
         },
     },
     toolbar: {
+        fileOption: "File",
         save: "Save",
         undo: "Undo",
         redo: "Redo",
@@ -6166,6 +6167,10 @@ export default {
 
         cellFormat: "Cell format config",
         print: "Print",
+    },
+    fileOption:{
+        open: "open file",
+        export: "export file",
     },
     alternatingColors: {
         applyRange: "Apply to range",

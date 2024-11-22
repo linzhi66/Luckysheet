@@ -5791,6 +5791,7 @@ export default {
         }
     },
     toolbar: {
+        fileOption: "File",
         save: "Guardar",
         undo: 'Deshacer',
         redo: 'Rehacer',
@@ -5854,6 +5855,10 @@ export default {
 
         cellFormat:"Configuración formato de celda",
         print:"Imprimir",
+    },
+    fileOption:{
+        open: "Abrir archivo",
+        export: "Exportar Archivos",
     },
     alternatingColors:{
         applyRange: 'Aplicar a rango',
